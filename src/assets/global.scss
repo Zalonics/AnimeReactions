@@ -1,0 +1,12 @@
+// SCSS GLOBAL Variables (For Media Queries)
+$mobile: 625px;
+$tablet: 769px;
+$desktop: 1024px;
+$widescreen: 1216px;
+$fullhd: 1408px;
+
+@import "~bulma/bulma";
+
+.has-border-primary {
+    border-color: $primary !important;
+}
