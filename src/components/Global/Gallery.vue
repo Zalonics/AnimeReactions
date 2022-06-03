@@ -1,14 +1,8 @@
 <script setup>
     import ReactionThumbnail from '@/components/Global/ReactionThumbnail.vue'
     import SearchTags from '@/components/UI/SearchTags.vue'
-    import {
-        ref,
-        onMounted,
-        onUpdated,
-        computed,
-        watch,
-        defineProps,
-    } from 'vue'
+
+    import { ref, onMounted, computed, watch, defineProps } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
     import { useUserStore } from '@/stores/user.js'
 
@@ -96,16 +90,6 @@
     })
 
     onMounted(async () => {
-        reactions.value = props.reactionsRef.map((reaction) => reaction)
-        if (tagsToFilter.value.length > 0 && tagsToFilter.value[0] !== '') {
-            reactions.value = reactions.value.filter((reaction) =>
-                hasTags(tagsToFilter.value, reaction.tags)
-            )
-        }
-        if (!isValidPage(pageNumber.value)) fetchPage(1)
-    })
-
-    onUpdated(async () => {
         reactions.value = props.reactionsRef.map((reaction) => reaction)
         if (tagsToFilter.value.length > 0 && tagsToFilter.value[0] !== '') {
             reactions.value = reactions.value.filter((reaction) =>

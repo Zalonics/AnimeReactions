@@ -11,6 +11,7 @@
     const error = ref(null)
 
     const userStore = useUserStore()
+
     const signUserUp = async () => {
         try {
             await userStore.signUp({
@@ -22,6 +23,7 @@
             error.value = e.message
         }
     }
+
     const signUp = async () => {
         if (await userStore.registerUserName(username.value, email.value)) {
             await signUserUp()

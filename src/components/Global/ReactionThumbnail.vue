@@ -1,5 +1,10 @@
 <script setup>
     import { onMounted, computed, defineProps, ref } from 'vue'
+    import { useUserStore } from '@/stores/user.js'
+    import { db } from '@/firebase/config'
+    import { doc, updateDoc } from 'firebase/firestore'
+
+    const userStore = useUserStore()
 
     const props = defineProps({
         reaction: Object,
@@ -10,7 +15,16 @@
     })
 
     const isFavorited = ref(false)
-    const toggleFavorited = () => (isFavorited.value = !isFavorited.value)
+    const toggleFavorited = () => {
+        isFavorited.value = !isFavorited.value
+        // Update entry in the database
+        const docRef = doc(db, 'users', userStore.userId)
+        if (isFavorited.value) {
+            updateDoc(docRef, {
+                favorites: [...this.favorites, props.reaction.id],
+            })
+        }
+    }
 
     const colorHeart = computed(() => {
         if (isFavorited.value) {
@@ -36,7 +50,7 @@
             <router-link :to="`/reaction/${reaction?.id}`">
                 <img :src="reaction?.imagePath" alt="" class="image" />
             </router-link>
-            <div @click="toggleFavorited" class="icon">
+            <div v-if="userStore.user" @click="toggleFavorited" class="icon">
                 <i class="icon--border fa-regular fa-heart"></i>
                 <i class="icon--foreground fa-solid fa-heart is-clickable"></i>
             </div>
